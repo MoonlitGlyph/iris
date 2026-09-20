@@ -1,6 +1,6 @@
 {
   "name": "@raincheck/iris",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lazy Vitest runs, test tracks, and a rainbow reporter, named after Iris, the Greek goddess of the rainbow.",
   "type": "module",
   "engines": {

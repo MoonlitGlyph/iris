@@ -123,8 +123,13 @@ export default class IrisReporter extends DefaultReporter {
   root = process.cwd();
   countFile = "";
 
-  constructor() {
+  /**
+   * @param {{ name?: string, spaceLetters?: boolean }} [options]
+   */
+  constructor({ name = "RAINCHECK", spaceLetters = true } = {}) {
     super({ summary: false });
+    this.reporterName = name;
+    this.spaceLetters = spaceLetters;
   }
 
   onInit(vitest) {
@@ -152,8 +157,11 @@ export default class IrisReporter extends DefaultReporter {
     this.completedTests = 0;
     this.completedTestIds.clear();
     this.progressPhase = 0;
+    const name = this.spaceLetters
+      ? [...this.reporterName].join(" ")
+      : this.reporterName;
     this.log();
-    this.log(`☂  ${rainbow("I R I S")}`);
+    this.log(`☂  ${rainbow(name)}`);
     this.log(
       color(
         2,

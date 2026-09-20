@@ -137,18 +137,23 @@ describe("test registry", () => {
     expectRun(await run(root, ["--list"]), 0, 2);
   }, 30_000);
 
-  test("loads the packaged reporter and keeps its counts in the configured root", async () => {
+  test.each([
+    { label: "default name and spacing", options: undefined, heading: "R A I N C H E C K" },
+    { label: "custom name", options: { name: "Iris" }, heading: "I r i s" },
+    { label: "spacing disabled", options: { spaceLetters: false }, heading: "RAINCHECK" },
+    { label: "custom name and spacing disabled", options: { name: "Moon research", spaceLetters: false }, heading: "Moon research" },
+  ])("loads the packaged reporter with $label and keeps its counts in the configured root", async ({ options, heading }) => {
     const root = await fixture();
     const cwd = await fixture();
     const config = path.join(root, "vitest.config.mjs");
     const source = await readFile(config, "utf8");
     await writeFile(config,
       "import IrisReporter from '@raincheck/iris/reporter';\n" +
-      source.replace("reporters: ['dot']", "reporters: [new IrisReporter()]")
+      source.replace("reporters: ['dot']", `reporters: [new IrisReporter(${options === undefined ? "" : JSON.stringify(options)})]`)
     );
     const result = await run(root, ["--root", root, "--config", config], {}, cwd);
     expectRun(result, 2, 0);
-    expect(result.output).toContain("I R I S");
+    expect(result.output).toContain(`☂  ${heading}\n`);
     const counts = JSON.parse(await readFile(
       path.join(root, "node_modules/.cache/iris/test-counts.json"), "utf8"
     ));

@@ -91,7 +91,21 @@ locks left by terminated processes can be recovered.
 ## Reporter
 
 The reporter displays per-file results, a rainbow progress bar in terminals,
-and failure diagnostics. Configure the bar with `IRIS_BAR_WIDTH` (0 fits the
+and failure diagnostics. Its heading defaults to `R A I N C H E C K`. Pass
+`name` to change the heading and `spaceLetters: false` to disable letter spacing:
+
+```js
+new IrisReporter(); // R A I N C H E C K
+new IrisReporter({ name: "IRIS" }); // I R I S
+new IrisReporter({ spaceLetters: false }); // RAINCHECK
+new IrisReporter({ name: "IRIS", spaceLetters: false }); // IRIS
+```
+
+`name` defaults to `"RAINCHECK"` and preserves the supplied capitalization;
+`spaceLetters` defaults to `true`. Rainbow coloring applies in terminals with
+either spacing setting.
+
+Configure the bar with `IRIS_BAR_WIDTH` (0 fits the
 terminal), `IRIS_BAR_COLOR` (`truecolor`, `single`, or `legacy`), and
 `IRIS_BAR_PALETTE` (comma-separated ANSI color codes). The corresponding
 `RAINCHECK_BAR_*` variables remain supported as fallbacks.
